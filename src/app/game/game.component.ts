@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { MatCardModule } from '@angular/material/card';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-game',
@@ -29,11 +30,14 @@ export class GameComponent {
   currentCard: string = '';
   game: Game = new Game();
 
-  constructor(public dialog: MatDialog) {}
+
+  constructor(private firestore: AngularFirestore, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.newGame();
-    console.log(this.game);
+    this.firestore.collection('items').valueChanges().subscribe((game) => {
+      console.log(game);
+    })
   }
 
   newGame() {
